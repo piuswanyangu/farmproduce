@@ -19,8 +19,14 @@ require('dotenv').config()
 app.use(express.json());
 
 // specify the route to register admin
-const loginRoutes = require("./routes/loginRoute")
-app.use("api/auth",loginRoutes)
+const regRoutes = require("./routes/loginRoute")
+app.use("/api/reg",regRoutes)
+
+// specify the route to register the user
+const userRoutes = require("./routes/userRoute");
+app.use("/api/user",userRoutes)
+
+
 
 // connect to database
 mongoose.connect(process.env.MONGO_URI).then(()=>{
@@ -31,7 +37,7 @@ mongoose.connect(process.env.MONGO_URI).then(()=>{
 
 // make the app to listen to port
 app.listen(PORT,()=>{
-    console.log(`The server is listenning to port : ${PORT}`)
+    console.log(`The server is running on port : ${PORT}`)
 })
 
 

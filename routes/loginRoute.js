@@ -6,6 +6,7 @@ const router=express.Router();
 const loginControllers = require("../controllers/loginControllers");
 // create the route to register an admin
 router.post("/",loginControllers.registerAdmin)
+router.post("/login", loginControllers.loginAdmin)
 
 // export the module
 module.exports=router;

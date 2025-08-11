@@ -13,7 +13,7 @@ exports.registerAdmin = async (req,res) => {
     const{name,email,password,secretKey}=req.body;
     // console.log("The details of admin are",name,email,password,secretKey);
     // verify the admin secret key
-    if(secretKey !==process.env.ADMIN_SECRET){
+    if(secretKey !==process.env.ADMIN_SECRET_KEY){
         return res.status(403).json({message:"Unathorized account creation"})
     }
 
@@ -38,5 +38,44 @@ exports.registerAdmin = async (req,res) => {
     // create the user
     const user = await newUser.save();
     // if registration is successfull return the user then
-    res.status(201).json({message:"Admin created successfully"})
+    res.status(201).json({message:"Admin created successfully",user})
+}
+
+// login admin
+exports.loginAdmin = async (req,res) => {
+    try {
+        // destructure the email and password from the req.body
+        const {email,password}=req.body
+        // console.log(email,password)
+
+        // check if the email exists
+        const user = await User.findOne({ email })
+        // check if the email does not exist
+        if(!user){
+            return res.status(401).json({message:"Email not registered"})
+        }
+
+    //    compare the provided password with the hashed one 
+    const isMatch = await bcrypt.compare(password,user.password)
+    if(!isMatch){
+        return res.status(401).json({message:"Invalid Password"})
+        // generate token (will be neede when a person tries to login)
+        const token = jwt.sign({userId:user._id,role:user.role},JWT_SECRET,{expiresIn:'1h'});
+
+        // send a success message
+        res.json({
+            message:"Login Successfull",
+            token,
+            user:{
+                id:user._id,
+                name:user.name,
+                email:user.email,
+                role:user.role,
+            }
+        })
+    }
+        
+    } catch (error) {
+        res.status(500).json({message:"Login Failed",error:error.message})
+    }
 }
