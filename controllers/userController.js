@@ -52,3 +52,44 @@ exports.registerUser = async(req,res)=>{
     }
 }
 
+// ========================
+// getting all users
+exports.getAllUsers = async (req,res) => {
+    try {
+        // find all parents using find method
+        const users = await User.find()
+        res.json(users)
+        
+    } catch (error) {
+        // catch any error that may occur during the process of fetching all the users
+        res.status(500).json({message:"Error fetching users",error:error.message})
+    }
+}
+
+// ===================================
+// getting users by Id
+exports.getUsersById = async(req,res)=>{
+    try{
+        const user = await User.findOne({ email:req.params.id})
+        if(!user){
+            return res.status(404).json({message:"User Not Found"})
+        }
+        // if successful just project the details of the user
+        res.status(200).json(user)
+
+    }catch(error){
+        // catch any error that could arise from  getting user by id
+        res.status(500).json({message:"Error fetching user",error:error.message})
+    }
+// ================================================
+// updating the user
+exports.updateUsers = async (req,res) => {
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+
+
+}
