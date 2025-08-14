@@ -17,6 +17,8 @@ router.get("/",userController.getAllUsers)
 router.get("/:id",userController.getUsersById)
 // below is the router to update the user
 router.put("/:id", userController.updateUsers)
+// router to delete the user
+router.delete("/:id",userController.deleteUser)
 
 
 

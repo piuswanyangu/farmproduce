@@ -109,3 +109,23 @@ exports.updateUsers = async (req,res) => {
     }
 }
 
+// ======================================================
+// deleting the user based on id
+exports.deleteUser =  async (req,res) => {
+    try {
+        // we shall use find by id and delete method to delete the user
+        const deletedUser = await User.findByIdAndDelete(req.params.id)
+        // check whether the user does not exists
+        if(!deletedUser){
+            return res.status(404).json({message:"User Not found"})
+        }
+        
+        // if successfull
+        await User.findOneAndDelete(req.params.id);
+       return res.status(200).json({message:"User Deleted Successfully"})
+        
+    } catch (error) {
+        // catch any error that it may occur during the process of registration
+        res.status(500).json({message:"Failed to delete user",error:error.message})
+    }
+}
