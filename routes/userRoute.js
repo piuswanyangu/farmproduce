@@ -11,10 +11,12 @@ const auth = require('../middlewares/auth');
 router.post('/',userController.registerUser)
 
 // route for fetching all users
-router.get("/",auth,userController.getAllUsers)
+router.get("/",userController.getAllUsers)
 
 // router to fetch user by Id
 router.get("/:id",userController.getUsersById)
+// below is the router to update the user
+router.put("/:id", userController.updateUsers)
 
 
 

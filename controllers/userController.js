@@ -7,9 +7,10 @@ const jwt = require('jsonwebtoken')
 
 exports.registerUser = async(req,res)=>{
     try {
+        console.log("The request body is",req.body)
         // get the user data from reques dot body
         const{name,email,password,phone,role,county,subCounty,village}=req.body;
-        // console.log(name,email,password,phone,role,county,subCounty,village)
+        console.log(name,email,password,phone,role,county,subCounty,village)
         // check if the user exists
         const existingUser = await User.findOne({ email });
         if(existingUser){
@@ -18,6 +19,7 @@ exports.registerUser = async(req,res)=>{
         }
         // hash the password
         const hashedPassword = await bcrypt.hash(password,10);
+        console.log(hashedPassword)
         // create the user
         const newUser = new User({
             name,
@@ -33,9 +35,10 @@ exports.registerUser = async(req,res)=>{
 
         })
         // save the user on db
-        const user = newUser.save();
+        const user = await newUser.save();
+        console.log(user)
         // if the user  is saved successfully return the response
-        res.status(201).json({
+        return res.status(201).json({
             message:"User registered successfully",
             user:{
                 id:user._id,
@@ -48,7 +51,7 @@ exports.registerUser = async(req,res)=>{
         })
         
     } catch (error) {
-        rs.status(403).json({message:"Failed to register user",error:error.message})
+        res.status(403).json({message:"Failed to register user",error:error.message})
     }
 }
 
@@ -81,15 +84,28 @@ exports.getUsersById = async(req,res)=>{
         // catch any error that could arise from  getting user by id
         res.status(500).json({message:"Error fetching user",error:error.message})
     }
+
+
+}
+
 // ================================================
 // updating the user
+
 exports.updateUsers = async (req,res) => {
     try {
+        // we shall find user by id then update
+        const updatedUser = await Use.findByIdAndUpdate(req.params.id,req.body,{new:true})
+        // if the passed in id is not found return
+        if(!updatedUser){
+            return res.status(404).json({message:"User Not Found"})
+        }
+        // if the user is found proceed to the next step
+        res.json(updatedUser)
         
     } catch (error) {
+        // catch any error that may occur during updating themuser
+        res.status(500).json({message:"Error Updating the user", error:error.message})
         
     }
 }
 
-
-}
