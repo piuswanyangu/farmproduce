@@ -26,6 +26,9 @@ app.use("/api/reg",regRoutes)
 const userRoutes = require("./routes/userRoute");
 app.use("/api/user",userRoutes)
 
+// specify the route to add products
+const productRoutes=require("./routes/produceRoute");
+app.use("/api/products",productRoutes)
 
 
 // connect to database

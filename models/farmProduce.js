@@ -27,7 +27,7 @@ const producePostSchema = new Schema({
     quantity:{type:Number,required:true,min:1},
     unit:{type:String,required:true,enum:['kg','bag','crate','ton','litre',]},
     pricePerUnit:{type:Number,required:true,min:0},
-    photo:{type:String},
+    product_Photo:{type:String},
     location:{
         county:{type:String},
         subCounty:{type:String},
@@ -39,6 +39,6 @@ const producePostSchema = new Schema({
 
 // exporting the schemas
 const User = mongoose.model('User',userSchema);
-const Produce = mongoose.model('Produce',producePostSchema)
+const Product = mongoose.model('Produce',producePostSchema)
 
-module.exports={User,Produce};
+module.exports={User,Product};
