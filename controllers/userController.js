@@ -36,7 +36,7 @@ exports.registerUser = async(req,res)=>{
         })
         // save the user on db
         const user = await newUser.save();
-        console.log(user)
+        // console.log(user)
         // if the user  is saved successfully return the response
         return res.status(201).json({
             message:"User registered successfully",
@@ -73,7 +73,9 @@ exports.getAllUsers = async (req,res) => {
 // getting users by Id
 exports.getUsersById = async(req,res)=>{
     try{
-        const user = await User.findOne({ email:req.params.id})
+        // fetch the users id (the person logged in)
+        // const userId = req.user.user._id;
+        const user = await User.findById(req.params.id)
         if(!user){
             return res.status(404).json({message:"User Not Found"})
         }
@@ -94,7 +96,7 @@ exports.getUsersById = async(req,res)=>{
 exports.updateUsers = async (req,res) => {
     try {
         // we shall find user by id then update
-        const updatedUser = await Use.findByIdAndUpdate(req.params.id,req.body,{new:true})
+        const updatedUser = await User.findByIdAndUpdate(req.params.id,req.body,{new:true})
         // if the passed in id is not found return
         if(!updatedUser){
             return res.status(404).json({message:"User Not Found"})
