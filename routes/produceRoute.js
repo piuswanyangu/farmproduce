@@ -1,23 +1,26 @@
-// import the express
-const express = require('express')
-// create the router
-const router= express.Router()
-// import the produce controller
-const produceController = require('../controllers/produceController')
-// import the auth function
-const auth = require("../middlewares/auth")
-// router to add products
-router.post("/",produceController.addProduct)
+const express = require("express");
+const router = express.Router();
+const produceController = require("../controllers/produceController");
+const { auth } = require("../middlewares/auth");
 
-// router to get all products
-router.get("/",produceController.getAllProduct)
-// router to get product by id
-router.get("/:id",produceController.getProductById)
-// router to update the product
-router.put("/:id",produceController.updateProducts)
-// router to delete the product
-router.delete("/:id",produceController.deleteProduct)
+// Add Product (with image upload)
+router.post(
+  "/",
+  auth,
+  produceController.uploadProductPhoto,
+  produceController.addProduct
+);
 
+// Get all products
+router.get("/", produceController.getAllProduct);
 
-// export the router
-module.exports=router;
+// Get product by ID
+router.get("/:id", produceController.getProductById);
+
+// Update product
+router.put("/:id", produceController.updateProducts);
+
+// Delete product
+router.delete("/:id", produceController.deleteProduct);
+
+module.exports = router;

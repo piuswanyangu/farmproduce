@@ -26,7 +26,7 @@ const producePostSchema = new Schema({
     category:{type:String,required:true,},
     description:{type:String,required:true,maxlength:500,},
     quantity:{type:Number,required:true,min:1},
-    unit:{type:String,required:true,enum:['kg','bag','crate','ton','litre',]},
+    unit:{type:String,required:true},
     pricePerUnit:{type:Number,required:true,min:0},
     product_Photo:{type:String},
     location:{
